@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Counter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: #F9A002;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme {
+            background: #1a1a1a;
+        }
+
+        .container {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            min-width: 320px;
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid #F9A002;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .container {
+            background: #F9A002;
+            border: 3px solid #1a1a1a;
+        }
+
+        h1 {
+            color: #F9A002;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme h1 {
+            color: #1a1a1a;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .counter-display {
+            font-size: 5em;
+            font-weight: 900;
+            color: #F9A002;
+            margin: 30px 0;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        body.dark-theme .counter-display {
+            color: #1a1a1a;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .counter-display.pulse {
+            transform: scale(1.15);
+            color: #FFD700;
+        }
+
+        body.dark-theme .counter-display.pulse {
+            color: #000;
+        }
+
+        .button {
+            background: #F9A002;
+            color: #1a1a1a;
+            border: 2px solid #1a1a1a;
+            padding: 16px 32px;
+            font-size: 1.2em;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body.dark-theme .button {
+            background: #1a1a1a;
+            color: #F9A002;
+            border: 2px solid #F9A002;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+        }
+
+        .subtract-btn {
+            background: #F9A002;
+            color: #1a1a1a;
+            border: 2px solid #1a1a1a;
+        }
+
+        body.dark-theme .subtract-btn {
+            background: #1a1a1a;
+            color: #F9A002;
+            border: 2px solid #F9A002;
+        }
+
+        .subtract-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .theme-btn {
+            background: transparent;
+            color: #F9A002;
+            border: 2px solid #F9A002;
+        }
+
+        body.dark-theme .theme-btn {
+            background: transparent;
+            color: #1a1a1a;
+            border: 2px solid #1a1a1a;
+        }
+
+        .theme-btn:hover {
+            background: #F9A002;
+            color: #1a1a1a;
+        }
+
+        body.dark-theme .theme-btn:hover {
+            background: #1a1a1a;
+            color: #F9A002;
+        }
+
+        .info {
+            margin-top: 30px;
+            color: #F9A002;
+            font-size: 0.9em;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        body.dark-theme .info {
+            color: #1a1a1a;
+        }
+
+        .week-info {
+            background: rgba(249, 160, 2, 0.15);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #F9A002;
+            color: #F9A002;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        body.dark-theme .week-info {
+            background: rgba(26, 26, 26, 0.15);
+            border: 2px solid #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .last-reset {
+            color: #F9A002;
+            font-size: 0.8em;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        body.dark-theme .last-reset {
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .counter-display {
+                font-size: 3em;
+            }
+            
+            .button {
+                padding: 12px 24px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Counter</h1>
+        
+        <div class="counter-display" id="counter">0</div>
+        
+        <div>
+            <button class="button" onclick="addToCounter()">Add 1</button>
+            <button class="button subtract-btn" onclick="subtractFromCounter()">Subtract 1</button>
+            <button class="button theme-btn" onclick="toggleTheme()">Switch Theme</button>
+        </div>
+        
+        <div class="week-info">
+            <strong>Week of:</strong> <span id="weekStart"></span>
+            <div class="last-reset" id="lastReset"></div>
+        </div>
+        
+        <div class="info">
+            <p>Counter automatically resets every Monday at midnight.</p>
+            <p>Your progress is saved locally in your browser.</p>
+        </div>
+    </div>
+
+    <script>
+        // In-memory storage for Claude.ai (replace with localStorage for real use)
+        let counterData = {
+            count: 0,
+            lastResetDate: new Date().toISOString(),
+            weekStart: getWeekStart(new Date())
+        };
+
+        function getWeekStart(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust for Monday start
+            d.setDate(diff);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function checkForWeeklyReset() {
+            const now = new Date();
+            const currentWeekStart = getWeekStart(now);
+            const storedWeekStart = new Date(counterData.weekStart);
+            
+            if (currentWeekStart.getTime() !== storedWeekStart.getTime()) {
+                // New week started, reset counter
+                counterData.count = 0;
+                counterData.lastResetDate = now.toISOString();
+                counterData.weekStart = currentWeekStart;
+                saveData();
+                updateDisplay();
+            }
+        }
+
+        function saveData() {
+            // In real implementation, this would save to localStorage:
+            // localStorage.setItem('weeklyCounter', JSON.stringify(counterData));
+            console.log('Data saved:', counterData);
+        }
+
+        function loadData() {
+            // In real implementation, this would load from localStorage:
+            // const saved = localStorage.getItem('weeklyCounter');
+            // if (saved) {
+            //     counterData = JSON.parse(saved);
+            // }
+            console.log('Data loaded:', counterData);
+        }
+
+        function subtractFromCounter() {
+            checkForWeeklyReset();
+            if (counterData.count > 0) {
+                counterData.count--;
+                saveData();
+                updateDisplay();
+                
+                // Add pulse animation
+                const counterEl = document.getElementById('counter');
+                counterEl.classList.add('pulse');
+                setTimeout(() => counterEl.classList.remove('pulse'), 200);
+            }
+        }
+
+        function addToCounter() {
+            checkForWeeklyReset();
+            counterData.count++;
+            saveData();
+            updateDisplay();
+            
+            // Add pulse animation
+            const counterEl = document.getElementById('counter');
+            counterEl.classList.add('pulse');
+            setTimeout(() => counterEl.classList.remove('pulse'), 200);
+        }
+
+        function resetCounter() {
+            if (confirm('Are you sure you want to reset the counter?')) {
+                counterData.count = 0;
+                counterData.lastResetDate = new Date().toISOString();
+                saveData();
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('counter').textContent = counterData.count;
+            
+            const weekStart = new Date(counterData.weekStart);
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+            
+            document.getElementById('weekStart').textContent = 
+                `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+            
+            const lastReset = new Date(counterData.lastResetDate);
+            document.getElementById('lastReset').textContent = 
+                `Last reset: ${formatDate(lastReset)}`;
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            // In real implementation, save theme preference:
+            // localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            // In real implementation, save theme preference:
+            // localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+
+        function loadTheme() {
+            // In real implementation, load theme preference:
+            // const savedTheme = localStorage.getItem('theme');
+            // if (savedTheme === 'dark') {
+            //     document.body.classList.add('dark-theme');
+            // }
+        }
+
+        // Initialize
+        loadTheme();
+        loadData();
+        checkForWeeklyReset();
+        updateDisplay();
+
+        // Check for weekly reset every minute
+        setInterval(checkForWeeklyReset, 60000);
+    </script>
+</body>
+</html>
